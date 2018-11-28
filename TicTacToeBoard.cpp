@@ -19,7 +19,12 @@ TicTacToeBoard::TicTacToeBoard()
 **/
 Piece TicTacToeBoard::toggleTurn()
 {
-  return Invalid;
+  if(turn == X)
+    turn = O;
+  else
+    turn = X;
+  return turn;
+  //return Invalid;
 }
 
 /**
@@ -42,6 +47,11 @@ Piece TicTacToeBoard::placePiece(int row, int column)
 **/
 Piece TicTacToeBoard::getPiece(int row, int column)
 {
+  /*if(row !> BOARDSIZE && row !< 0){
+    if(column !> BOARDSI& column !< 0){
+      std::cout << "hello" << std::endl;
+    }
+  }*/
   return Invalid;
 }
 
