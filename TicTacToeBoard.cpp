@@ -8,6 +8,7 @@
 TicTacToeBoard::TicTacToeBoard()
 {
   turn = X;
+  gameOver = false;
   for(int i=0; i<BOARDSIZE; i++)
     for(int j=0; j<BOARDSIZE; j++)
       board[i][j] = Blank;
@@ -38,7 +39,32 @@ Piece TicTacToeBoard::toggleTurn()
 **/ 
 Piece TicTacToeBoard::placePiece(int row, int column)
 {
-  return Invalid;
+  if(row > BOARDSIZE || column > BOARDSIZE)
+    return Invalid;
+  
+  if(board[row][column] == Blank && gameOver == false){
+    board[row][column] = turn;
+  
+  int point = 0;
+  if(turn == X)
+    point = 1;
+  else
+    point = -1;
+  playerScore[row] += point;
+  playerScore[BOARDSIZE+column] += point;
+  if(row == column)
+    playerScore[2*BOARDSIZE] += point;
+  if(BOARDSIZE - 1 - column == row)
+  playerScore[2*BOARDSIZE+1] += point;
+    toggleTurn();
+    return board[row][column];
+    
+  }
+  
+  else
+    return board[row][column];
+
+  
 }
 
 /**
@@ -47,12 +73,14 @@ Piece TicTacToeBoard::placePiece(int row, int column)
 **/
 Piece TicTacToeBoard::getPiece(int row, int column)
 {
-  /*if(row !> BOARDSIZE && row !< 0){
-    if(column !> BOARDSI& column !< 0){
-      std::cout << "hello" << std::endl;
+  if(row <= BOARDSIZE && row >= 0){
+    if(column <= BOARDSIZE && column >= 0){
+      return board[row][column];
     }
-  }*/
-  return Invalid;
+    else return Invalid;
+  }
+  else return Invalid;
+  //return Invalid;
 }
 
 /**
@@ -61,5 +89,25 @@ Piece TicTacToeBoard::getPiece(int row, int column)
 **/
 Piece TicTacToeBoard::getWinner()
 {
+  for(int i = 0; i < 2*BOARDSIZE+2; i++){
+    if(playerScore[i] == BOARDSIZE){
+      gameOver = true;
+      return X;
+      
+      
+    }
+    else if(playerScore[i] == BOARDSIZE*-1){
+      gameOver = true;
+      return O;
+      
+    }
+  }
+  for(int i = 0; i < BOARDSIZE; i++){
+    for(int j = 0; j < BOARDSIZE; j++){
+      if(board[i][j] == Blank)
+        return Invalid;
+    }
+    
+  }
   return Invalid;
 }
